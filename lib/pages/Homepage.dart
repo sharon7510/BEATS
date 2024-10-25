@@ -29,6 +29,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MusicProvider>().requestStoragePermissionAndFetchFiles();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final hi = MediaQuery.of(context).size.height;
     final wi = MediaQuery.of(context).size.width;
@@ -42,6 +50,7 @@ class _HomePageState extends State<HomePage> {
             .toList();
 
     return Scaffold(
+      backgroundColor: Colors.black,
       floatingActionButton: isFabVisible
           ? FloatingActionButton(
               onPressed: () {
@@ -62,7 +71,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           'BEATS',
-          style: TextStyle(fontSize: hi / 45),
+          style: TextStyle(fontSize: hi / 45,color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -238,9 +247,7 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(16.0),
                               child: TextButton(
                                 child: const Text('Retry'),
-                                onPressed: () => context
-                                    .read<MusicProvider>()
-                                    .requestStoragePermissionAndFetchFiles(),
+                                onPressed: () => context.read<MusicProvider>().requestStoragePermissionAndFetchFiles(),
                               ),
                             ),
                           )
@@ -253,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                               return Card(
                                 color: Colors.grey.shade900,
                                 child: ListTile(
-                                  leading: const Icon(Icons.music_note),
+                                  leading: const Icon(Icons.music_note,color: Colors.white),
                                   title: Text(
                                     musicFile.title,
                                     maxLines: 2,
@@ -315,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                                               margin: const EdgeInsets.all(10),
                                               backgroundColor: Colors.red,
                                               content: Text(
-                                                style: const TextStyle(color: Colors.white),
+                                                style: TextStyle(color: Colors.white,fontSize: hi/50),
                                                 updatedFavoriteStatus
                                                     ? 'Added to Favorites'
                                                     : 'Removed from Favorites',

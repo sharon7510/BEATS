@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String appName = "Mp3Player";
+    String appName = "BEATS";
     String developerName = "Sharon Antony";
     String gmail = "samdevworks100@gmail.com";
     final hi = MediaQuery.of(context).size.height;
@@ -49,9 +49,9 @@ class AboutPage extends StatelessWidget {
                 Text(
                   style: TextStyle(fontSize: hi/50),
                   '- Customizable playlists: Create and manage playlists with ease.\n'
-                      '- Dark mode: Toggle between light and dark themes for a comfortable user experience.\n'
+                      // '- Dark mode: Toggle between light and dark themes for a comfortable user experience.\n'
                       '- Offline access: Enjoy your music even without an internet connection.\n'
-                      '- Song recommendations: Get suggestions based on your music preferences.\n'
+                      // '- Song recommendations: Get suggestions based on your music preferences.\n'
                       '- Favorite songs: Mark songs as favorites for quick access.',
                 ),
                 const SizedBox(height: 20),
@@ -107,7 +107,7 @@ class AboutPage extends StatelessWidget {
                 Text(
                   style: TextStyle(fontSize: hi/50),
                   '- Icons provided by Flutter.\n'
-                      '- Music API provided by [API Provider Name].\n'
+                      // '- Music API provided by [API Provider Name].\n'
                       '- Special thanks to all the developers who contributed to open-source libraries used in this app.',
                 ),
               ],

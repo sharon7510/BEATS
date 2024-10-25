@@ -48,9 +48,9 @@ class MyApp extends StatelessWidget {
       // themeMode: themeProvider.themeMode,  // Set the theme mode dynamically
       // theme: ThemeData.light(),  // Light theme
       // darkTheme: ThemeData.dark(),
-      theme: lightTheme,
+      theme: darkTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.system,
       title: 'Music Player',
       home: CustomBottomNavigationBar(),
     );

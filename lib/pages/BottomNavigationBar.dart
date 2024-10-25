@@ -27,17 +27,17 @@ class CustomBottomNavigationBar extends StatelessWidget {
         index: tabProvider.currentIndex,
         height: 60.0,
         color: Theme.of(context).primaryColor,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         onTap: (index) {
           tabProvider.onTabTapped(index, context);
         },
         items: <Widget>[
-          Icon(Icons.settings, size: hi/30, color: Colors.white),
-          Icon(Icons.home, size: hi/30, color: Colors.white), // Home tab
-          Icon(Icons.favorite, size: hi/30, color: Colors.white),
-          Icon(Icons.playlist_play, size: hi/30, color: Colors.white),
+          Icon(Icons.settings, size: hi/30, color: tabProvider.currentIndex==0?  Colors.red : Colors.black ),
+          Icon(Icons.home, size: hi/30, color: tabProvider.currentIndex==1? Colors.red : Colors.black), // Home tab
+          Icon(Icons.favorite, size: hi/30, color: tabProvider.currentIndex==2? Colors.red : Colors.black),
+          Icon(Icons.playlist_play, size: hi/30, color: tabProvider.currentIndex==3? Colors.red : Colors.black),
         ],
       ),
     );

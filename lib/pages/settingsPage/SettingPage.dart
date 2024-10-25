@@ -11,9 +11,10 @@ class SettingsPage extends StatelessWidget {
     final hi = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          'Settings',style: TextStyle(fontSize: hi/45),),
+          'Settings',style: TextStyle(fontSize: hi/45,color: Colors.white),),
       ),
       body: ListView(
         children: [
@@ -24,22 +25,22 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => RecentlyPlayedPage()),
               );
             },
-            leading: const Icon(Icons.history),
+            leading: const Icon(Icons.history,color: Colors.white),
             title: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 "Watch History"),
             subtitle: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 'Recently Played'),
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(Icons.info,color: Colors.white),
             title: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 'About'),
             subtitle: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 'Learn more about the app'),
             onTap: () {
               Navigator.push(
@@ -52,12 +53,12 @@ class SettingsPage extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.privacy_tip),
+            leading: const Icon(Icons.privacy_tip,color: Colors.white),
             title: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 'Privacy Policy'),
             subtitle: Text(
-                style: TextStyle(fontSize: hi/50),
+                style: TextStyle(fontSize: hi/50,color: Colors.white),
                 'Read our privacy policy'),
             onTap: () {
               Navigator.push(

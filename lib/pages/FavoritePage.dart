@@ -13,14 +13,15 @@ class FavoritesPage extends StatelessWidget {
     final musicProvider = Provider.of<MusicProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Favorites',style: TextStyle(fontSize: hi/45),),
+        title: Text('Favorites',style: TextStyle(fontSize: hi/45,color: Colors.white),),
       ),
       body: musicProvider.favorites.isEmpty
           ? const Center(
               child: Text(
                 'No favorite songs yet!',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             )
           : ListView.builder(
@@ -31,9 +32,9 @@ class FavoritesPage extends StatelessWidget {
                 return Card(
                   color: Colors.grey.shade900,
                   child: ListTile(
-                    leading: const Icon(Icons.music_note),
+                    leading: const Icon(Icons.music_note,color: Colors.white,),
                     title: Text(
-                      style: TextStyle(fontSize: hi/55),
+                      style: TextStyle(fontSize: hi/55,color: Colors.white),
                         favoriteMusicFile.title,
                         maxLines: 2),
                     trailing: IconButton(

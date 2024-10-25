@@ -17,6 +17,7 @@ class PlaylistScreen extends StatelessWidget {
     final playlistProvider = Provider.of<PlaylistProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.black,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 13),
         child: FloatingActionButton.extended(
@@ -48,7 +49,7 @@ class PlaylistScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: hi/1000,
+                  childAspectRatio: hi/1100,
                 ),
                 itemCount: playlistProvider.playlists.length,
                 itemBuilder: (context, index) {

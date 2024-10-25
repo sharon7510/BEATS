@@ -8,6 +8,55 @@ import 'modelClass/modelclass.dart';
 MusicProvider musicProvider = MusicProvider();
 
 class MusicProvider with ChangeNotifier {
+
+  Future<void> requestStoragePermissionAndFetchFiles() async {
+    _isLoading = true;
+    notifyListeners();
+
+    // Check and request storage permission
+    if (await _requestStoragePermission()) {
+      await fetchAllMusicFiles();  // Fetch music files if permission is granted
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<bool> _requestStoragePermission() async {
+    // If storage permission is already granted
+    if (await Permission.storage.isGranted) {
+      print("Storage permission already granted.");
+      return true;
+    }
+
+    // Request storage permission for devices below Android 11
+    if (await Permission.storage.request().isGranted) {
+      print("Storage permission granted.");
+      return true;
+    }
+
+    // For Android 11+ (API 30+), check for MANAGE_EXTERNAL_STORAGE permission
+    if (await Permission.manageExternalStorage.isGranted) {
+      print("Manage external storage permission granted.");
+      return true;
+    }
+
+    // Request MANAGE_EXTERNAL_STORAGE permission for Android 11+ if not granted
+    if (await Permission.manageExternalStorage.request().isGranted) {
+      print("Manage external storage permission granted after request.");
+      return true;
+    }
+
+    // If permission is permanently denied, guide user to app settings
+    if (await Permission.manageExternalStorage.isPermanentlyDenied) {
+      print("Storage permission permanently denied, opening app settings.");
+      await openAppSettings();  // Opens the settings for the user to manually grant permission
+    }
+
+    print("Permission denied.");
+    return false;
+  }
+
   List<MusicFile> _musicFiles = [];
   List<MusicFile> _favorites = [];
   List<Playlist> _playlists = [];
@@ -152,22 +201,6 @@ class MusicProvider with ChangeNotifier {
 
   bool isFavorite(MusicFile musicFile) {
     return _favorites.contains(musicFile);
-  }
-
-  // Request storage permission and fetch music files
-  Future<void> requestStoragePermissionAndFetchFiles() async {
-    _isLoading = true;
-    notifyListeners();
-
-    final status = await Permission.storage.request();
-    if (status.isGranted) {
-      await fetchAllMusicFiles();
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   // Fetch all music files from storage

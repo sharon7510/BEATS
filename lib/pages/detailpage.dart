@@ -45,9 +45,10 @@ class _DetailPageState extends State<DetailPage> {
     final double wi = MediaQuery.of(context).size.width;
     Widget space = SizedBox(height: hi / 70);
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          style: TextStyle(fontSize: hi / 45),
+          style: TextStyle(fontSize: hi / 45,color: Colors.white),
           musicProvider.currentMusicFile != null
               ? musicProvider.currentMusicFile!.title
               : 'No Song Playing',
@@ -242,22 +243,24 @@ class _DetailPageState extends State<DetailPage> {
 
   void _showPlaylistDialog(BuildContext context,
       PlaylistProvider playlistProvider, MusicFile musicFile) {
+    final hi = MediaQuery.of(context).size.height;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add to Playlist'),
+          backgroundColor: Colors.black,
+          title: const Text('Add to Playlist',style: TextStyle(color: Colors.white),),
           content: SizedBox(
             height: 300,
             width: double.maxFinite,
             child: playlistProvider.playlists.isEmpty
-                ? const Center(child: Text('No playlists available.'))
+                ? const Center(child: Text('No playlists available.',style: TextStyle(color: Colors.white),))
                 : ListView.builder(
                     itemCount: playlistProvider.playlists.length,
                     itemBuilder: (context, index) {
                       final playlist = playlistProvider.playlists[index];
                       return ListTile(
-                        title: Text(playlist.name),
+                        title: Text(playlist.name,style: TextStyle(color: Colors.white),),
                         trailing: const Icon(Icons.add),
                         onTap: () {
                           playlistProvider.addSongToPlaylist(
@@ -266,6 +269,7 @@ class _DetailPageState extends State<DetailPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 content: Text(
+                                  style: TextStyle(fontSize: hi/50),
                                     '${musicFile.title} added to ${playlist.name}')),
                           );
                         },
@@ -301,10 +305,19 @@ class _DetailPageState extends State<DetailPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Create a New Playlist'),
+          backgroundColor: Colors.black,
+          title: const Text('Create a New Playlist',style: TextStyle(color: Colors.white),),
           content: TextField(
+            style: TextStyle(
+              color: Colors.white,
+            ),
             controller: playlistNameController,
-            decoration: const InputDecoration(hintText: 'Enter playlist name'),
+            decoration: const InputDecoration(
+              hintStyle: TextStyle(
+                color: Colors.white
+              ),
+              fillColor: Colors.white,
+                hintText: 'Enter playlist name'),
           ),
           actions: [
             TextButton(

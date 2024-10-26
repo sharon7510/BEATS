@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           'BEATS',
-          style: TextStyle(fontSize: hi / 45,color: Colors.white),
+          style: TextStyle(fontSize: hi / 45, color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -140,7 +140,19 @@ class _HomePageState extends State<HomePage> {
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        AlbumArtWidget(), // Placeholder for Album Art
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  playlist: filteredMusicFiles,
+                                  musicFile: musicProvider.currentMusicFile!, // Pass the music file info
+                                ),
+                              ),
+                            );
+                          },
+                            child: AlbumArtWidget()), // Placeholder for Album Art
                         SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -151,7 +163,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
@@ -191,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                                         Card(
                                           color: Colors.red,
                                           child: Padding(
-                                            padding: EdgeInsets.all(hi/150),
+                                            padding: EdgeInsets.all(hi / 150),
                                             child: InkWell(
                                               onTap: () {
                                                 if (musicProvider.isPlaying) {
@@ -247,7 +260,9 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(16.0),
                               child: TextButton(
                                 child: const Text('Retry'),
-                                onPressed: () => context.read<MusicProvider>().requestStoragePermissionAndFetchFiles(),
+                                onPressed: () => context
+                                    .read<MusicProvider>()
+                                    .requestStoragePermissionAndFetchFiles(),
                               ),
                             ),
                           )
@@ -260,7 +275,8 @@ class _HomePageState extends State<HomePage> {
                               return Card(
                                 color: Colors.grey.shade900,
                                 child: ListTile(
-                                  leading: const Icon(Icons.music_note,color: Colors.white),
+                                  leading: const Icon(Icons.music_note,
+                                      color: Colors.white),
                                   title: Text(
                                     musicFile.title,
                                     maxLines: 2,
@@ -318,11 +334,15 @@ class _HomePageState extends State<HomePage> {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
-                                              behavior: SnackBarBehavior.floating, // Makes the SnackBar float above the bottom
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              // Makes the SnackBar float above the bottom
                                               margin: const EdgeInsets.all(10),
                                               backgroundColor: Colors.red,
                                               content: Text(
-                                                style: TextStyle(color: Colors.white,fontSize: hi/50),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: hi / 50),
                                                 updatedFavoriteStatus
                                                     ? 'Added to Favorites'
                                                     : 'Removed from Favorites',

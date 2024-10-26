@@ -203,18 +203,23 @@ class MusicProvider with ChangeNotifier {
     return _favorites.contains(musicFile);
   }
 
-  // Fetch all music files from storage
   Future<void> fetchAllMusicFiles() async {
     List<MusicFile> audioFiles = [];
-    try {
-      Directory musicDir = Directory('/storage/emulated/0/Music');
-      Directory downloadDir = Directory('/storage/emulated/0/Download');
+    List<Directory> directoriesToSearch = [
+      Directory('/storage/emulated/0/Music'),
+      Directory('/storage/emulated/0/Download'),
+      Directory('/storage/emulated/0/Audio'),
+      Directory('/storage/emulated/0/Podcasts'),
+      Directory('/storage/emulated/0/Ringtones'),
+      Directory('/storage/emulated/0/Alarms'),
+      Directory('/storage/emulated/0/Notifications'),
+    ];
 
-      if (await musicDir.exists()) {
-        audioFiles.addAll(await _scanDirectoryForAudioFiles(musicDir));
-      }
-      if (await downloadDir.exists()) {
-        audioFiles.addAll(await _scanDirectoryForAudioFiles(downloadDir));
+    try {
+      for (Directory dir in directoriesToSearch) {
+        if (await dir.exists()) {
+          audioFiles.addAll(await _scanDirectoryForAudioFiles(dir));
+        }
       }
 
       _musicFiles = audioFiles;
@@ -226,6 +231,45 @@ class MusicProvider with ChangeNotifier {
       print("Error fetching music files: $e");
     }
   }
+
+// Recursive function to scan for audio files without dependencies
+//   Future<List<MusicFile>> _scanDirectoryForAudioFiles(Directory dir) async {
+//     List<MusicFile> audioFiles = [];
+//     await for (var entity in dir.list(recursive: true, followLinks: false)) {
+//       if (entity is File && (entity.path.endsWith('.mp3') || entity.path.endsWith('.wav') || entity.path.endsWith('.m4a'))) {
+//         audioFiles.add(MusicFile(
+//           path: entity.path,
+//           title: entity.uri.pathSegments.last, // Use the filename as the title
+//         ));
+//       }
+//     }
+//     return audioFiles;
+//   }
+
+
+  // Fetch all music files from storage
+  // Future<void> fetchAllMusicFiles() async {
+  //   List<MusicFile> audioFiles = [];
+  //   try {
+  //     Directory musicDir = Directory('/storage/emulated/0/Music');
+  //     Directory downloadDir = Directory('/storage/emulated/0/Download');
+  //
+  //     if (await musicDir.exists()) {
+  //       audioFiles.addAll(await _scanDirectoryForAudioFiles(musicDir));
+  //     }
+  //     if (await downloadDir.exists()) {
+  //       audioFiles.addAll(await _scanDirectoryForAudioFiles(downloadDir));
+  //     }
+  //
+  //     _musicFiles = audioFiles;
+  //     var box = Hive.box('musicBox');
+  //     box.put('musicFiles', _musicFiles);
+  //
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print("Error fetching music files: $e");
+  //   }
+  // }
 
   // Scan a directory for audio files
   Future<List<MusicFile>> _scanDirectoryForAudioFiles(Directory dir) async {

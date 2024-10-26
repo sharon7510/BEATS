@@ -1,4 +1,4 @@
-package com.example.beats
+package com.sam.beats
 
 import io.flutter.embedding.android.FlutterActivity
 

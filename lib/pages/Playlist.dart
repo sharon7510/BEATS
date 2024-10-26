@@ -364,13 +364,11 @@ class PlaylistDetailScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        label: const Text(
+        label: Text(
           "Add Music",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontSize: hi/50),
         ),
-        onPressed: () {
-          _showAddSongsToPlaylistDialog(context, playlistProvider, playlist);
-        },
+        onPressed: ()=>_showAddSongsToPlaylistDialog(context, playlistProvider, playlist),
       ),
       appBar: AppBar(
         title: Text(playlist.name),
@@ -391,22 +389,20 @@ class PlaylistDetailScreen extends StatelessWidget {
                   color: Colors.grey.shade900,
                   child: ListTile(
                     leading: const Icon(Icons.music_note),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(
-                            musicFile: song,
-                            playlist: playlist.songs,
-                          ),
+                    onTap: ()=>Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(
+                          musicFile: song,
+                          playlist: playlist.songs,
                         ),
-                      );
-                    },
+                      ),
+                    ),
                     title: Text(
                       song.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white,fontSize: hi/50),
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),

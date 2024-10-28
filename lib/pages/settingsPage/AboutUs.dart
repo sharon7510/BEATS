@@ -73,7 +73,7 @@ class AboutPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '1.0.0',
+                  '1.0.1',
                   style: TextStyle(fontWeight: FontWeight.bold,fontSize: hi/50),
                 ),
                 const SizedBox(height: 20),

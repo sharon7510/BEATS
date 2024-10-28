@@ -56,8 +56,8 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             StackContainer(
               text: musicProvider.currentMusicFile != null
@@ -101,138 +101,137 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
             space,
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.deepPurpleAccent,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                ),
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          onPressed: _playPrevious,
-                          icon:
-                              const Icon(Icons.skip_previous_rounded, size: 40),
-                        ),
-                        SizedBox(
-                          height: 70,
-                          width: 70,
-                          child: FloatingActionButton(
-                            backgroundColor: Colors.redAccent,
-                            onPressed: () {
-                              if (musicProvider.isPlaying) {
-                                musicProvider.pauseMusic();
-                              } else {
-                                musicProvider.resumeMusic();
-                              }
-                            },
-                            child: Icon(
-                              musicProvider.isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow,
-                              color: Colors.white,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: _playNext,
-                          icon: Icon(Icons.skip_next_rounded, size: hi / 30),
-                        ),
-                      ],
-                    ),
-
-                    // Repeat, Shuffle, Playlist buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
+            Container(
+              height: hi/3.3,
+              decoration: const BoxDecoration(
+                color: Colors.deepPurpleAccent,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        onPressed: _playPrevious,
+                        icon:
+                            const Icon(Icons.skip_previous_rounded, size: 40),
+                      ),
+                      SizedBox(
+                        height: 70,
+                        width: 70,
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.redAccent,
                           onPressed: () {
-                            setState(() {
-                              repeatMode = getNextRepeatMode(repeatMode);
-                              _setRepeatMode(musicProvider);
-                            });
+                            if (musicProvider.isPlaying) {
+                              musicProvider.pauseMusic();
+                            } else {
+                              musicProvider.resumeMusic();
+                            }
                           },
-                          icon: Icon(
-                            repeatMode == RepeatMode.off
-                                ? Icons.repeat
-                                : (repeatMode == RepeatMode.one
-                                    ? Icons.repeat_one
-                                    : Icons.repeat),
+                          child: Icon(
+                            musicProvider.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
                             color: Colors.white,
-                            size: hi / 30,
+                            size: 40,
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isShuffling = !isShuffling;
-                              if (isShuffling) {
-                                musicProvider.musicFiles.shuffle();
-                              }
-                            });
-                          },
-                          icon: Icon(
-                            isShuffling
-                                ? Icons.shuffle
-                                : Icons.shuffle_outlined,
-                            color: isShuffling ? Colors.blue : Colors.white,
-                            size: hi / 30,
-                          ),
+                      ),
+                      IconButton(
+                        onPressed: _playNext,
+                        icon: Icon(Icons.skip_next_rounded, size: hi / 30),
+                      ),
+                    ],
+                  ),
+
+                  // Repeat, Shuffle, Playlist buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            repeatMode = getNextRepeatMode(repeatMode);
+                            _setRepeatMode(musicProvider);
+                          });
+                        },
+                        icon: Icon(
+                          repeatMode == RepeatMode.off
+                              ? Icons.repeat
+                              : (repeatMode == RepeatMode.one
+                                  ? Icons.repeat_one
+                                  : Icons.repeat),
+                          color: Colors.white,
+                          size: hi / 30,
                         ),
-                        IconButton(
-                          onPressed: () {
-                            _showPlaylistDialog(
-                                context,
-                                Provider.of<PlaylistProvider>(context,
-                                    listen: false),
-                                musicProvider.currentMusicFile!);
-                          },
-                          icon: Icon(Icons.playlist_play,
-                              color: Colors.white, size: hi / 30),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isShuffling = !isShuffling;
+                            if (isShuffling) {
+                              musicProvider.musicFiles.shuffle();
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          isShuffling
+                              ? Icons.shuffle
+                              : Icons.shuffle_outlined,
+                          color: isShuffling ? Colors.blue : Colors.white,
+                          size: hi / 30,
                         ),
-                        IconButton(
-                          onPressed: () {
-                            musicProvider.toggleFavorite(musicProvider
-                                .currentMusicFile!); // Toggle favorite status
-                            bool isFavorite = musicProvider.isFavorite(musicProvider
-                                .currentMusicFile!); // Check new favorite status
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating, // Makes the SnackBar float above the bottom
-                                margin: const EdgeInsets.all(10),
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  style: TextStyle(fontSize: hi/50),
-                                  isFavorite
-                                      ? 'Added to Favorites'
-                                      : 'Removed from Favorites',
-                                ),
-                                duration: const Duration(seconds: 1),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          _showPlaylistDialog(
+                              context,
+                              Provider.of<PlaylistProvider>(context,
+                                  listen: false),
+                              musicProvider.currentMusicFile!);
+                        },
+                        icon: Icon(Icons.playlist_play,
+                            color: Colors.white, size: hi / 30),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          musicProvider.toggleFavorite(musicProvider
+                              .currentMusicFile!); // Toggle favorite status
+                          bool isFavorite = musicProvider.isFavorite(musicProvider
+                              .currentMusicFile!); // Check new favorite status
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              behavior: SnackBarBehavior.floating, // Makes the SnackBar float above the bottom
+                              margin: const EdgeInsets.all(10),
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                style: TextStyle(fontSize: hi/50),
+                                isFavorite
+                                    ? 'Added to Favorites'
+                                    : 'Removed from Favorites',
                               ),
-                            );
-                          },
-                          icon: Icon(
-                            musicProvider
-                                    .isFavorite(musicProvider.currentMusicFile!)
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: musicProvider
-                                    .isFavorite(musicProvider.currentMusicFile!)
-                                ? Colors.red
-                                : Colors.white,
-                            size: hi / 30,
-                          ),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          musicProvider
+                                  .isFavorite(musicProvider.currentMusicFile!)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: musicProvider
+                                  .isFavorite(musicProvider.currentMusicFile!)
+                              ? Colors.red
+                              : Colors.white,
+                          size: hi / 30,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

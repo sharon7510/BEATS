@@ -49,7 +49,7 @@ class PlaylistScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: hi/1100,
+                  childAspectRatio: hi/1000,
                 ),
                 itemCount: playlistProvider.playlists.length,
                 itemBuilder: (context, index) {

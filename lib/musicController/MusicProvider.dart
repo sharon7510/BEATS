@@ -80,7 +80,7 @@ class MusicProvider with ChangeNotifier {
   Duration get totalDuration => _totalDuration;
 
   MusicProvider() {
-    _loadMusicFilesFromHive();
+    // _loadMusicFilesFromHive();
     _loadFavoritesFromHive();
     _loadPlaylistsFromHive();
     _loadRecentlyPlayedFromHive(); // Load recently played from Hive on startup
@@ -125,29 +125,26 @@ class MusicProvider with ChangeNotifier {
   }
 
   // Load music files from Hive
-  void _loadMusicFilesFromHive() {
-    var box = Hive.box('musicBox');
-    List<dynamic> storedData = box.get('musicFiles', defaultValue: <MusicFile>[]);
-
-    _musicFiles = storedData.map((data) {
-      if (data is String) {
-        return MusicFile(path: data, title: data.split('/').last);
-      } else if (data is MusicFile) {
-        return data;
-      }
-      throw Exception('Invalid data in Hive: $data');
-    }).toList();
-    notifyListeners();
-  }
-
-  // Load favorite songs from Hive
-  void _loadFavoritesFromHive() {
+  Future<void> _loadFavoritesFromHive() async {
     var favoritesBox = Hive.box<String>('favorites');
     List<String> favoritePaths = List<String>.from(favoritesBox.values);
 
+    // Load only those musicFiles that match a path in favoritePaths
     _favorites = _musicFiles.where((musicFile) => favoritePaths.contains(musicFile.path)).toList();
+
+    print("Loaded favorites from Hive: ${_favorites.map((e) => e.title).toList()}"); // Debugging
     notifyListeners();
   }
+
+
+  // Load favorite songs from Hive
+  // void _loadFavoritesFromHive() {
+  //   var favoritesBox = Hive.box<String>('favorites');
+  //   List<String> favoritePaths = List<String>.from(favoritesBox.values);
+  //
+  //   _favorites = _musicFiles.where((musicFile) => favoritePaths.contains(musicFile.path)).toList();
+  //   notifyListeners();
+  // }
 
   // Load playlists from Hive
   void _loadPlaylistsFromHive() {
@@ -185,23 +182,56 @@ class MusicProvider with ChangeNotifier {
     _playlists.remove(playlist);
     notifyListeners();
   }
-
-  // Toggle favorite status
   void toggleFavorite(MusicFile musicFile) {
     var favoritesBox = Hive.box<String>('favorites');
-    if (_favorites.contains(musicFile)) {
-      _favorites.remove(musicFile);
+
+    // Check if the song is in favorites in Hive directly
+    if (favoritesBox.containsKey(musicFile.path)) {
       favoritesBox.delete(musicFile.path);
+      _favorites.removeWhere((item) => item.path == musicFile.path); // Ensure it's removed from the list
+      print("Removed from favorites: ${musicFile.title}");
     } else {
-      _favorites.add(musicFile);
       favoritesBox.put(musicFile.path, musicFile.path);
+      _favorites.add(musicFile); // Add to the list as well
+      print("Added to favorites: ${musicFile.title}");
     }
-    notifyListeners();
+
+    notifyListeners(); // Notify UI of change
   }
 
+
+  // Future<void> _loadFavoritesFromHive() async {
+  //   var favoritesBox = Hive.box<String>('favorites');
+  //   List<String> favoritePaths = List<String>.from(favoritesBox.values);
+  //
+  //   _favorites = _musicFiles.where((musicFile) => favoritePaths.contains(musicFile.path)).toList();
+  //   print("Loaded favorites: ${_favorites.map((e) => e.title).toList()}");
+  //   notifyListeners();
+  // }
+
+
+  // Toggle favorite status
+  // void toggleFavorite(MusicFile musicFile) {
+  //   var favoritesBox = Hive.box<String>('favorites');
+  //   if (_favorites.contains(musicFile)) {
+  //     _favorites.remove(musicFile);
+  //     favoritesBox.delete(musicFile.path);
+  //   } else {
+  //     _favorites.add(musicFile);
+  //     favoritesBox.put(musicFile.path, musicFile.path);
+  //   }
+  //   notifyListeners();
+  // }
+
   bool isFavorite(MusicFile musicFile) {
-    return _favorites.contains(musicFile);
+    var favoritesBox = Hive.box<String>('favorites');
+    return favoritesBox.containsKey(musicFile.path); // Directly check Hive
   }
+
+
+  // bool isFavorite(MusicFile musicFile) {
+  //   return _favorites.contains(musicFile);
+  // }
 
   Future<void> fetchAllMusicFiles() async {
     List<MusicFile> audioFiles = [];
